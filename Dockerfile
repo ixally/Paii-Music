@@ -1,19 +1,14 @@
-FROM debian:latest
+FROM python:3.11-slim
 
-# Update & install dependencies dasar
-RUN apt update && apt upgrade -y && \
-    apt install -y \
+# Install system deps
+RUN apt-get update && apt-get install -y \
     git \
     curl \
-    python3 \
-    python3-venv \
-    python3-pip \
     ffmpeg \
     build-essential \
     libxml2-dev \
     libxslt-dev \
-    python3-dev && \
-    rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js 18 & npm
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
@@ -24,16 +19,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 # Set workdir
 WORKDIR /app
 
-# Copy semua file
+# Copy project files
 COPY . /app/
 
-# Setup virtual environment
-RUN python3 -m venv /app/venv
-ENV PATH="/app/venv/bin:$PATH"
-
-# Upgrade pip dan install dependencies Python
+# Upgrade pip & install Python deps
 RUN pip install --no-cache-dir -U pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Jalankan bot
+# Run bot
 CMD ["python3", "-m", "MusicMan"]
