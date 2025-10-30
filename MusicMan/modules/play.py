@@ -133,7 +133,7 @@ async def generate_cover(requested_by, title, views, duration, thumbnail):
     os.remove("background.png")
 
 
-@Client.on_message(filters.command("playlist") & filters.group & ~filters.edited)
+@Client.on_message(filters.command("playlist") & filters.group)
 async def playlist(client, message):
     global que
     if message.chat.id in DISABLED_GROUPS:
@@ -201,7 +201,7 @@ def r_ply(type_):
     return mar
 
 
-@Client.on_message(filters.command("current") & filters.group & ~filters.edited)
+@Client.on_message(filters.command("current") & filters.group)
 async def ee(client, message):
     if message.chat.id in DISABLED_GROUPS:
         return
@@ -213,7 +213,7 @@ async def ee(client, message):
         await message.reply("**Silahkan Nyalakan dulu VCG nya!**")
 
 
-@Client.on_message(filters.command("player") & filters.group & ~filters.edited)
+@Client.on_message(filters.command("player") & filters.group)
 @authorized_users_only
 async def settings(client, message):
     if message.chat.id in DISABLED_GROUPS:
@@ -714,7 +714,7 @@ async def play(_, message: Message):
     return await lel.delete()
 
 
-@Client.on_message(filters.command("ytplay") & filters.group & ~filters.edited)
+@Client.on_message(filters.command("ytplay") & filters.group)
 async def ytplay(_, message: Message):
     global que
     if message.chat.id in DISABLED_GROUPS:
@@ -854,7 +854,7 @@ async def ytplay(_, message: Message):
         return await lel.delete()
     
 
-@Client.on_message(filters.command("dplay") & filters.group & ~filters.edited)
+@Client.on_message(filters.command("dplay") & filters.group)
 async def deezer(client: Client, message_: Message):
     if message_.chat.id in DISABLED_GROUPS:
         return
