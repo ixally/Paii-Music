@@ -18,3 +18,4 @@ motor
 dnspython
 Python_ARQ
 youtube-search
+youtube_dl
