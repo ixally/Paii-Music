@@ -17,3 +17,4 @@ pymongo
 motor
 dnspython
 Python_ARQ
+youtube-search
