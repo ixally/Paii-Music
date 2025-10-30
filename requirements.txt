@@ -16,3 +16,4 @@ wget
 pymongo
 motor
 dnspython
+Python_ARQ
