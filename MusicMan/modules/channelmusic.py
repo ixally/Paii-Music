@@ -60,7 +60,7 @@ chat_id = None
 
 
 
-@Client.on_message(filters.command(["channelplaylist","cplaylist"]) & filters.group & ~filters.edited)
+@Client.on_message(filters.command(["channelplaylist","cplaylist"]) & filters.group)
 async def playlist(client, message):
     try:
       lel = await client.get_chat(message.chat.id)
@@ -125,7 +125,7 @@ def r_ply(type_):
     )
 
 
-@Client.on_message(filters.command(["channelcurrent","ccurrent"]) & filters.group & ~filters.edited)
+@Client.on_message(filters.command(["channelcurrent","ccurrent"]) & filters.group)
 async def ee(client, message):
     try:
       lel = await client.get_chat(message.chat.id)
@@ -142,7 +142,7 @@ async def ee(client, message):
         await message.reply("No VC instances running in this chat")
 
 
-@Client.on_message(filters.command(["channelplayer","cplayer"]) & filters.group & ~filters.edited)
+@Client.on_message(filters.command(["channelplayer","cplayer"]) & filters.group)
 @authorized_users_only
 async def settings(client, message):
     try:
@@ -346,7 +346,7 @@ async def m_cb(b, cb):
         await cb.answer("Chat is not connected!", show_alert=True)
 
 
-@Client.on_message(filters.command(["channelplay","cplay"])  & filters.group & ~filters.edited)
+@Client.on_message(filters.command(["channelplay","cplay"])  & filters.group)
 @authorized_users_only
 async def play(_, message: Message):
     global que
@@ -583,7 +583,7 @@ async def play(_, message: Message):
     return await lel.delete()
 
 
-@Client.on_message(filters.command(["channeldplay","cdplay"]) & filters.group & ~filters.edited)
+@Client.on_message(filters.command(["channeldplay","cdplay"]) & filters.group)
 @authorized_users_only
 async def deezer(client: Client, message_: Message):
     global que
@@ -713,7 +713,7 @@ async def deezer(client: Client, message_: Message):
     os.remove("final.png")
 
 
-@Client.on_message(filters.command(["channelsplay","csplay"]) & filters.group & ~filters.edited)
+@Client.on_message(filters.command(["channelsplay","csplay"]) & filters.group)
 @authorized_users_only
 async def jiosaavn(client: Client, message_: Message):
     global que
