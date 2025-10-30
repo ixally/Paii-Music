@@ -1,5 +1,5 @@
 pyrogram==2.0.106
-git+https://github.com/callsmusic/pytgcalls@master
+pytgcalls==3.0.0.dev24
 TgCrypto
 python-dotenv
 yt-dlp
