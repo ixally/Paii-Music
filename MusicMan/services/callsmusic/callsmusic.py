@@ -1,38 +1,43 @@
-# Calls Music 1 - Telegram bot for streaming audio in group calls
-# Copyright (C) 2021  Roj Serbest
+# Calls Music Modernized - Telegram bot for streaming audio in group calls
+# Compatible with Pyrogram v2 & PyTgCalls v3
+# Original credits: Roj Serbest
 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-
+import asyncio
 from pyrogram import Client
-from pytgcalls import PyTgCalls
+from pytgcalls import GroupCallFactory
 
 from MusicMan.config import API_HASH, API_ID, SESSION_NAME
 from MusicMan.services.callsmusic import queues
 
+# --- Setup Pyrogram client ---
 client = Client(SESSION_NAME, API_ID, API_HASH)
-pytgcalls = PyTgCalls(client)
 
+# --- Setup group call factory ---
+call_factory = GroupCallFactory(client)
+pytgcalls = call_factory.get_group_call()
 
-@pytgcalls.on_stream_end()
-def on_stream_end(chat_id: int) -> None:
+# --- Event handler for stream end ---
+@pytgcalls.on_network_status_changed
+async def on_stream_end(call, is_connected):
+    if not is_connected:
+        return
+    chat_id = call.chat_id
     queues.task_done(chat_id)
 
     if queues.is_empty(chat_id):
-        pytgcalls.leave_group_call(chat_id)
+        await pytgcalls.leave_group_call(chat_id)
     else:
-        pytgcalls.change_stream(chat_id, queues.get(chat_id)["file"])
+        next_item = queues.get(chat_id)
+        await pytgcalls.change_stream(chat_id, next_item["file"])
 
+# --- Runner ---
+async def run():
+    await client.start()
+    await pytgcalls.start()
+    print("✅ PyTgCalls connected successfully!")
+    await idle()
 
-run = pytgcalls.run
+# --- Helper for asyncio ---
+async def idle():
+    while True:
+        await asyncio.sleep(1)
