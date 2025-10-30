@@ -8,24 +8,19 @@
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+# See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 from typing import List, Union
-
 from pyrogram import filters
-
 from MusicMan.config import COMMAND_PREFIXES
 
-other_filters = filters.group & ~filters.edited & ~filters.via_bot & ~filters.forwarded
-other_filters2 = (
-    filters.private & ~filters.edited & ~filters.via_bot & ~filters.forwarded
-)
-
+# Hapus filter yang udah deprecated (edited & forwarded)
+other_filters = filters.group & ~filters.via_bot
+other_filters2 = filters.private & ~filters.via_bot
 
 def command(commands: Union[str, List[str]]):
     return filters.command(commands, COMMAND_PREFIXES)
