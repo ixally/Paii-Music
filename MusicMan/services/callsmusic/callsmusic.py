@@ -44,6 +44,3 @@ async def on_stream_end(call, is_connected):
     else:
         next_item = queues.get(chat_id)
         await pytgcalls.change_stream(chat_id, next_item["file"])
-
-
-run = pytgcalls.run
