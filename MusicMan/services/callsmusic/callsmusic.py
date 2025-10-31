@@ -37,7 +37,7 @@ async def on_stream_end(call, is_connected):
 # --- Runner ---
 async def run():
     await client.start()
-    await pytgcalls.start()
+    await pytgcalls.start(-1003144399235)
     print("✅ PyTgCalls connected successfully!")
     await idle()
 
