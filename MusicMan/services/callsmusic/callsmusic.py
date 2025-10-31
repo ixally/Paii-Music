@@ -10,8 +10,12 @@ from MusicMan.config import API_HASH, API_ID, SESSION_NAME
 from MusicMan.services.callsmusic import queues
 
 # --- Setup Pyrogram client ---
-client = Client(SESSION_NAME, API_ID, API_HASH)
-
+client = Client(
+    "userbot",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    session_string=SESSION_NAME
+)
 # --- Setup group call factory ---
 call_factory = GroupCallFactory(client)
 pytgcalls = call_factory.get_group_call()
