@@ -35,9 +35,17 @@ async def on_stream_end(call, is_connected):
         await pytgcalls.change_stream(chat_id, next_item["file"])
 
 # --- Runner ---
+# --- Runner ---
 async def run():
     await client.start()
-    print("✅ PyTgCalls connected successfully!")
+
+    # Pastikan userbot udah join ke grup target
+    chat = await client.get_chat(-1002646031980)  # ganti ID grup lo
+
+    # Start panggilan grup di chat itu
+    await pytgcalls.start(chat.id)
+
+    print(f"✅ PyTgCalls connected to group: {chat.title}")
     await idle()
 
 # --- Helper for asyncio ---
