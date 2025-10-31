@@ -32,14 +32,18 @@ call_factory = GroupCallFactory(client)
 pytgcalls = call_factory.get_group_call()
 
 
-@pytgcalls.on_stream_end()
-def on_stream_end(chat_id: int) -> None:
+@pytgcalls.on_network_status_changed
+async def on_stream_end(call, is_connected):
+    if not is_connected:
+        return
+    chat_id = call.chat_id
     queues.task_done(chat_id)
 
     if queues.is_empty(chat_id):
-        pytgcalls.leave_group_call(chat_id)
+        await pytgcalls.leave_group_call(chat_id)
     else:
-        pytgcalls.change_stream(chat_id, queues.get(chat_id)["file"])
+        next_item = queues.get(chat_id)
+        await pytgcalls.change_stream(chat_id, next_item["file"])
 
 
 run = pytgcalls.run
