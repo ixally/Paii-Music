@@ -20,7 +20,6 @@ bot = Bot(
 
 async def main():
     await bot.start()
-    await run()
     await bot.idle()
     await bot.stop()
 
