@@ -20,7 +20,8 @@ bot = Bot(
 
 async def main():
     await bot.start()
-    await bot.idle()
+    print("bot music sudah aktif")
+    await idle()
     await bot.stop()
 
 
