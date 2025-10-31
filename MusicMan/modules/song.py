@@ -257,79 +257,104 @@ def time_to_seconds(time):
     return sum(int(x) * 60 ** i for i, x in enumerate(reversed(stringt.split(":"))))
 
 
-@Client.on_message(filters.command("saavn") & ~filters.edited)
+# SAAVN MUSIC
+
+@Client.on_message(filters.command("saavn"))
 async def jssong(_, message):
+    # skip kalau pesan hasil editan
+    if message.edit_date:
+        return
+
     global is_downloading
     if len(message.command) < 2:
         await message.reply_text("/saavn masukan judul lagu.")
         return
+
     if is_downloading:
         await message.reply_text(
             "Downloadan yang lain sedang berlangsung, coba lagi nanti"
         )
         return
+
     is_downloading = True
     text = message.text.split(None, 1)[1]
     query = text.replace(" ", "%20")
     m = await message.reply_text("🔎 **Sedang Mencari Lagu...**")
+
     try:
         songs = await arq.saavn(query)
         if not songs.ok:
             await message.reply_text(songs.result)
+            is_downloading = False
             return
+
         sname = songs.result[0].song
         slink = songs.result[0].media_url
         ssingers = songs.result[0].singers
-        await m.edit("Downloading")
+
+        await m.edit("⬇️ **Downloading...**")
         song = await download_song(slink)
-        await m.edit("Uploading")
+
+        await m.edit("⬆️ **Uploading...**")
         await message.reply_audio(audio=song, title=sname, performer=ssingers)
+
         os.remove(song)
         await m.delete()
+
     except Exception as e:
+        await m.edit(f"❌ Error: {e}")
+    finally:
         is_downloading = False
-        await m.edit(str(e))
-        return
-    is_downloading = False
 
 
-# Deezer Music
+# DEEZER MUSIC
 
-
-@Client.on_message(filters.command("deezer") & ~filters.edited)
+@Client.on_message(filters.command("deezer"))
 async def deezsong(_, message):
+    # skip kalau pesan hasil editan
+    if message.edit_date:
+        return
+
     global is_downloading
     if len(message.command) < 2:
-        await message.reply_text("/deezer masukan judul lagu")
+        await message.reply_text("/deezer masukan judul lagu.")
         return
+
     if is_downloading:
         await message.reply_text(
             "Downloadan yang lain sedang berlangsung, coba lagi nanti"
         )
         return
+
     is_downloading = True
     text = message.text.split(None, 1)[1]
     query = text.replace(" ", "%20")
     m = await message.reply_text("🔎 **Sedang Mencari Lagu...**")
+
     try:
         songs = await arq.deezer(query, 1)
         if not songs.ok:
             await message.reply_text(songs.result)
+            is_downloading = False
             return
+
         title = songs.result[0].title
         url = songs.result[0].url
         artist = songs.result[0].artist
-        await m.edit("Downloading")
+
+        await m.edit("⬇️ **Downloading...**")
         song = await download_song(url)
-        await m.edit("Uploading")
+
+        await m.edit("⬆️ **Uploading...**")
         await message.reply_audio(audio=song, title=title, performer=artist)
+
         os.remove(song)
         await m.delete()
+
     except Exception as e:
+        await m.edit(f"❌ Error: {e}")
+    finally:
         is_downloading = False
-        await m.edit(str(e))
-        return
-    is_downloading = False
 
 
 @Client.on_message(filters.command(["vsong", "video"]))
