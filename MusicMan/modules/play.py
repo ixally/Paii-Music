@@ -236,7 +236,7 @@ async def settings(client, message):
 
 
 @Client.on_message(
-    filters.command("musicplayer") & ~filters.edited & ~filters.bot & ~filters.private
+    filters.command("musicplayer") & ~filters.bot & ~filters.private
 )
 @authorized_users_only
 async def hfmm(_, message):
