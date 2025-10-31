@@ -132,7 +132,6 @@ def map(pos):
 @Client.on_message(
     filters.command("start")
     & filters.group
-    & ~ filters.edited
 )
 async def start(client: Client, message: Message):
     await message.reply_text(
@@ -155,7 +154,6 @@ async def start(client: Client, message: Message):
 @Client.on_message(
     filters.command("help")
     & filters.group
-    & ~ filters.edited
 )
 async def help(client: Client, message: Message):
     await message.reply_text(
@@ -175,7 +173,6 @@ async def help(client: Client, message: Message):
 @Client.on_message(
     filters.command("reload")
     & filters.group
-    & ~ filters.edited
 )
 async def reload(client: Client, message: Message):
     await message.reply_text("""✅ Bot **berhasil dimulai ulang!**\n\n• **Bot** telah **direstart**""",
