@@ -16,7 +16,7 @@
 
 
 from pyrogram import Client
-from pytgcalls import PyTgCalls
+from pytgcalls import GroupCallFactory
 
 from MusicMan.config import API_HASH, API_ID, SESSION_NAME
 from MusicMan.services.callsmusic import queues
@@ -28,7 +28,8 @@ client = Client(
     session_string=SESSION_NAME
 )
 
-pytgcalls = PyTgCalls(client)
+call_factory = GroupCallFactory(client)
+pytgcalls = call_factory.get_group_call()
 
 
 @pytgcalls.on_stream_end()
